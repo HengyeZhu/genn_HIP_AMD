@@ -479,8 +479,6 @@ private:
                                 unsigned int batchSize, bool trueSpike) const;
     void genEmitEvent(EnvironmentExternalBase &env, NeuronUpdateGroupMerged &ng,
                       size_t index, bool trueSpike) const;
-    void genCopyEventToGlobal(EnvironmentExternalBase &env, NeuronUpdateGroupMerged &ng,
-                              unsigned int batchSize, size_t index, bool trueSpike) const;
 
     //! Populate $(_remap) and $(_col_length) based on $(_ind), $(_row_stride) and $(_col_stride)
     void genRemap(EnvironmentExternalBase &env) const;
@@ -502,6 +500,8 @@ private:
     // Members
     //--------------------------------------------------------------------------
     const KernelBlockSize m_KernelBlockSizes;
+    // NOTE: genEmitEvent() does not take batchSize; this is set in genNeuronUpdate() before emission.
+    mutable unsigned int m_CurrentBatchSize = 1;
 
     //--------------------------------------------------------------------------
     // Static members
